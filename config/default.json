@@ -1,0 +1,6 @@
+{
+    "jwtPrivateKey": "catsecret",
+    "requiresAuth": true,
+    "env": "development",
+    "host": "localhost"
+  }
