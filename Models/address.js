@@ -8,6 +8,7 @@ const addressSchema = new Schema({
   zipCode: { type: String },
   city: { type: String },
   country: { type: String },
+  region: { type: String },
 });
 
 const addressModel = Mongoose.model("Address", addressSchema);

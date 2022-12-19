@@ -18,6 +18,8 @@ const userSchema = new Schema({
 });
 
 
+
+
 userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({
         _id: this._id, isAdmin: this.isAdmin, userName: this.userName},
@@ -40,7 +42,12 @@ function validate(user) {
     return schema.validate(user);
 };
 
+
+
 const User = Mongoose.model("User", userSchema);
+
+
+
 
 module.exports.User = User;
 module.exports.validate = validate;

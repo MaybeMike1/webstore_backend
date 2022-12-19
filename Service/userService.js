@@ -12,33 +12,33 @@ async function hashPassword(plainPass) {
 }
 
 async function signIn(req, res) {
-    await connection();
-    const { password, email } = req.body;
+    try{
+        const { password, email } = req.body;
+        const claimedUser = await User.findOne({ email: email });
 
-    
-
-    const claimedUser = await User.findOne({ email: email });
-
-    console.log(claimedUser.password);
-
-
-    if (claimedUser == null) {
-        console.log("1")
-        return res.status(400).send({ data: "Username or Password is invalid" });
-    }
-    
-    const isVerify = await bcrypt.compare(password, claimedUser.password);
-    if (isVerify) {
-        const token = claimedUser.generateAuthToken();
-        res.status(200).send(token);
-        Mongoose.connection.close().then(() => {
-            connection();
-        });
+        if (claimedUser == null) {
+            return res.status(400).send({ data: "Username or Password is invalid" });
+        }
         
+        const isVerify = await bcrypt.compare(password, claimedUser.password);
+        if (isVerify) {
+            const token = claimedUser.generateAuthToken();
+            delete claimedUser.password;
+            return res.status(201).send({token : token, email : claimedUser.email});
+            };
+     }catch(error) {
+        res.status(500).send({error : error.toString()})
     }
-
 }
+    
+    
 
+
+
+async function getById(_id) {
+    const user = await User.find({_id : _id}).catch((error) => { throw error });
+    return user;
+}
 async function getAllUsers(){
     const users = User.find({});
 
@@ -49,6 +49,7 @@ async function getAllUsers(){
 async function deleteById(_id){
     return await User.findByIdAndDelete(_id);
 }
+
 
 async function registerUser(req, res) {
         const errors  = validate(req.body);
@@ -69,10 +70,17 @@ async function registerUser(req, res) {
 
 };
 
+async function updateById(_id, user) {
+    const updatedUser = await User
+        .findById({ _id: _id }).updateOne({ $set: {...user} }).catch((error) => { throw error });
+    return updatedUser;
+}
 
 userService.registerUser = registerUser;
 userService.signIn = signIn;
 userService.getAll = getAllUsers;
 userService.deleteById = deleteById;
+userService.updateById = updateById;
+userService.getById = getById;
 
 module.exports = userService;

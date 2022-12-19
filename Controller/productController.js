@@ -52,7 +52,11 @@ router.delete("/:id", [admin], async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-    
+    await productService.updateById(req.params.id, req.body).then((result) => {
+        res.status(201).send({message : "Product was successfully updated", result});
+    }).catch((error) => {
+        res.status(500).send({message : error.toString()})
+    })    
 })
 router.get("/asd", async (req, res) => {
     const categories = await categoryService.getAll();

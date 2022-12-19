@@ -15,7 +15,9 @@ const productSchema = new Schema({
     
 });
 
-
+productSchema.statics.findByName = function(name) {
+    return this.find({name: name});
+}
 
 const Product = Mongoose.model('Product', productSchema);
 

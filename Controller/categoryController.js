@@ -4,20 +4,30 @@ const { Category } = require('../Models/category');
 const categoryService = require('./../Service/categoryService');
 const admin = require('./../middleware/admin');
 const auth = require('../middleware/auth');
+const validateObjectId = require('../middleware/validateObjectId');
 
-router.get("/categories", async (req, res) => {
+router.get("/", async (req, res) => {
     const categories = await categoryService.getAll();
     res.status(200).send({data : categories});
 });
 
-router.get("/:category", async (req, res) => {
-    const categoryParams = req.params.category;
-    const category = await categoryService.getByCategory(categoryParams);
+router.get("/:id", validateObjectId, async (req, res) => {
+    const id = req.params.id;
+    const category = await categoryService.findById(id);
+    console.log(category)
     if(!category) {
-        res.status(404).send({message : `Category with Category - ${category} was not found`});
+        return res.status(404).send({message : `Category with Category - ${category} was not found`});
     }
     res.status(200).send({data : category})
 });
+
+router.put("/:id", [auth, admin], (req, res) => {
+    categoryService.updateById(req.params.id, req.body).then(() => {
+        res.status(201).send({message : "Successfully updated"});
+    }).catch((error) => {
+        res.status(500).send({message : error.toString()})
+    })
+})
 
 
 router.post("/create", [auth, admin], async (req, res) => {
