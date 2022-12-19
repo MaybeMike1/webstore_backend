@@ -32,7 +32,7 @@ async function deleteById(_id) {
 
 async function createOne(req) {
   const data = req.body;
-  const {errors} = validate(data);
+  const { errors } = validate(data);
   if (errors) return errors.details[0];
   const savedModel = await Model.create({
     _id: new Mongoose.Types.ObjectId(),

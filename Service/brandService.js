@@ -1,13 +1,11 @@
-const { Brand } = require('./../Models/brand');
+const { Brand } = require("./../Models/brand");
 
 async function getBrand() {
-    return await Brand.find({});
-};
-
-
+  return await Brand.find({});
+}
 
 const brandService = {
-    getBrand : getBrand
+  getBrand: getBrand,
 };
 
 module.exports = brandService;

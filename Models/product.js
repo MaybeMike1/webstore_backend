@@ -1,27 +1,25 @@
-const Mongoose = require('mongoose');
+const Mongoose = require("mongoose");
 const { Schema } = Mongoose;
-const { Category, categorySchema } = require('./category');
-const { Brand , brandSchema} = require('./brand');
-const {Model, modelSchema} = require('./model');
-
+const { Category, categorySchema } = require("./category");
+const { Brand, brandSchema } = require("./brand");
+const { Model, modelSchema } = require("./model");
 
 const productSchema = new Schema({
-    name : {type : String},
-    price : {type : Number},
-    quantity : {type : Number},
-    brand : {type : brandSchema},
-    category : {type : categorySchema},
-    model : {type: modelSchema}
-    
+  name: { type: String },
+  price: { type: Number },
+  quantity: { type: Number },
+  brand: { type: brandSchema },
+  category: { type: categorySchema },
+  model: { type: modelSchema },
 });
 
-productSchema.statics.findByName = function(name) {
-    return this.find({name: name});
-}
+productSchema.statics.findByName = function (name) {
+  return this.find({ name: name });
+};
 
-const Product = Mongoose.model('Product', productSchema);
+const Product = Mongoose.model("Product", productSchema);
 
 module.exports = {
-    Product,
-    productSchema
+  Product,
+  productSchema,
 };

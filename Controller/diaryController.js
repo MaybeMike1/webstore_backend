@@ -1,15 +1,15 @@
-const router = require('express').Router();
-const diary = require('./../Service/diaryService');
+const router = require("express").Router();
+const diary = require("./../Service/diaryService");
 
 router.post("/create", async (req, res) => {
-    const newDiary = await diary.create(req);
-    res.send({data: newDiary});
+  const newDiary = await diary.create(req);
+  res.send({ data: newDiary });
 });
 
-router.delete("/delete/:id", async (req, res ) => {
-    const id = req.params.id;
+router.delete("/delete/:id", async (req, res) => {
+  const id = req.params.id;
 
-    const diary = await diary.deleteOne(id);
-})
+  const diary = await diary.deleteOne(id);
+});
 
 module.exports = router;
