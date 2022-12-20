@@ -4,7 +4,7 @@ const { Model, modelSchema, validate } = require("./../Models/model");
 const modelService = {};
 
 async function getOne(_id) {
-  const model = await Model.findById(_id);
+  const model = await Model.findOne({_id : _id});
   if (!model) {
     return "No models found with id", _id;
   }

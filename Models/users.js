@@ -34,15 +34,24 @@ userSchema.methods.generateAuthToken = function () {
   return token;
 };
 
+function validatePassword(user){
+  const schema = Joi.object({
+    oldPassword : Joi.string().min(6).required(),
+    password: Joi.string().min(6).required(),
+  });
+
+  return schema.validate(user);
+}
+
 function validate(user) {
   const schema = Joi.object({
-    firstName: Joi.string().max(100).required(),
-    lastName: Joi.string().max(100).required(),
-    userName: Joi.string().max(150).required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-    isAdmin: Joi.boolean(),
-    diaries: Joi.array().required(),
+   firstName : Joi.string().max(100).required(),
+    lastName : Joi.string().max(100).required(),
+    userName : Joi.string().min(6).required(),
+    email : Joi.string().min(10).max(255).required().email(),
+    password : Joi.string().min(6).required(),
+    address : Joi.object().required(),
+    isAdmin : Joi.boolean().required()
   });
 
   return schema.validate(user);
@@ -52,6 +61,8 @@ const User = Mongoose.model("User", userSchema);
 
 module.exports = {
   User,
-  userSchema
+  userSchema,
+  validate,
+  validatePassword
 }
 

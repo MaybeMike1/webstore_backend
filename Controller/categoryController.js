@@ -6,6 +6,7 @@ const admin = require("./../middleware/admin");
 const auth = require("../middleware/auth");
 const validateObjectId = require("../middleware/validateObjectId");
 
+
 router.get("/", async (req, res) => {
   const categories = await categoryService.getAll();
   res.status(200).send({ data: categories });
@@ -23,7 +24,7 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.status(200).send({ data: category });
 });
 
-router.put("/:id", [auth, admin], (req, res) => {
+router.put("/:id", [auth, admin, validateObjectId], (req, res) => {
   categoryService
     .updateById(req.params.id, req.body)
     .then(() => {
@@ -34,7 +35,7 @@ router.put("/:id", [auth, admin], (req, res) => {
     });
 });
 
-router.post("/create", [auth, admin], async (req, res) => {
+router.post("/", [auth, admin], async (req, res) => {
   let _id = new Mongoose.Types.ObjectId();
   const data = { category: req.body.category, _id: _id };
   await Category.create(data)
@@ -46,7 +47,7 @@ router.post("/create", [auth, admin], async (req, res) => {
     });
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, validateObjectId], async (req, res) => {
   const id = req.params.id;
   await categoryService
     .deleteById(id)

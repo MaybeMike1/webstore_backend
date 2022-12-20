@@ -4,7 +4,7 @@ const Joi = require("@hapi/joi");
 const { Schema } = Mongoose;
 
 const modelSchema = new Schema({
-  modelName: { type: string, required: true, unique: true },
+  modelName: { type: string, required: true},
 });
 
 const Model = Mongoose.model("Model", modelSchema);

@@ -1,10 +1,17 @@
-const Mongoose = require("mongoose");
-const { Schema } = Mongoose;
+const Mongoose = require('mongoose')
+const { Schema } = Mongoose
 
 const brandSchema = new Schema({
-  name: { type: String, required: true, unique: true },
-});
+  name: { type: String, required: true },
+})
 
-const Brand = Mongoose.model("Brand", brandSchema);
+function validate(brand) {
+  const schema = Joi.object({
+    name: Joi.string().max(100).required(),
+  })
 
-module.exports = { Brand, brandSchema };
+  return schema.validate(brand)
+}
+const Brand = Mongoose.model('Brand', brandSchema)
+
+module.exports = { Brand, brandSchema, validate }
